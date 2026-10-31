@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #ecf3fd;
+  color: #1b2b4b;
+}
+
+.container {
+  max-width: 1150px;
+  margin: 35px auto;
+  padding: 0 15px;
+}
+
+.container h1 {
+  font-size: 27px;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 15px;
+}
+
+@media (max-width: 480px) {
+  .container h1 {
+    font-size: 23px;
+  }
+}
+
+
