@@ -66,3 +66,7 @@
   background: #aaa;
   cursor: not-allowed;
 }
+.product-info p {
+  padding: 5px;
+
+}

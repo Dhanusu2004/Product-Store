@@ -11,7 +11,7 @@ body {
 }
 
 .container h1 {
-  font-size: 27px;
+  font-size: 30px;
   margin-bottom: 12px;
 }
 
@@ -19,11 +19,18 @@ body {
   color: #64748b;
   font-size: 15px;
 }
+.product-count{
+  font-size: 30px;
+font-family: Georgia, 'Times New Roman', Times, serif;
+  padding: 20PX;
+}
 
 @media (max-width: 480px) {
   .container h1 {
     font-size: 23px;
   }
 }
+
+
 
 

@@ -9,6 +9,7 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  
 }
 .categories button {
   padding: 11px 20px;
