@@ -1,50 +1,57 @@
-import "./CategoryFilter.css";
 function CategoryFilter({
   category,
   setCategory,
   sort,
-  setSort
+  setSort,
+  categories,
+  search,
+  setSearch
 }) {
+
   return (
     <div className="filters">
-      <div className="categories">
-        <button className={category === "All" ? "active" : ""}
-          onClick={() => setCategory("All")}
-        >
-          All
-        </button>
-        <button
-          className={category === "Electronics" ? "active" : ""}
-          onClick={() => setCategory("Electronics")}
-        >
-          Electronics
-        </button>
 
-        <button
-          className={category === "Fashion" ? "active" : ""}
-          onClick={() => setCategory("Fashion")}
-        >
-          Fashion
-        </button>
-        <button
-          className={category === "Home" ? "active" : ""}
-          onClick={() => setCategory("Home")}
-        >
-          Home
-        </button>
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setCategory("All");
+        }}
+      />
+
+      <div className="category-buttons">
+
+        {categories.map((item) => (
+
+          <button
+            key={item}
+            className={
+              category === item ? "active" : ""
+            }
+            onClick={() => setCategory(item)}
+          >
+            {item}
+          </button>
+
+        ))}
+
       </div>
 
       <select
         value={sort}
         onChange={(e) => setSort(e.target.value)}
       >
-        <option value="">Default</option>
-        <option value="low">Sort: Price low to high</option>
-        <option value="high">Price high to low</option>
+        <option value="">Sort Products</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
         <option value="rating">Top Rated</option>
       </select>
+
     </div>
   );
 }
+
 export default CategoryFilter;
 
