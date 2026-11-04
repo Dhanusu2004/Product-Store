@@ -1,5 +1,8 @@
+import { Link } from "react-router-dom";
 import "./ProductCard.css";
+
 function ProductCard({
+  id,
   image,
   name,
   description,
@@ -11,7 +14,7 @@ function ProductCard({
   brand,
   availability,
   onAddToCart
-}) 
+})
 {
 
   const inStock = stock > 0;
@@ -21,7 +24,9 @@ function ProductCard({
 
       <div className="image-container">
 
-        <img src={image} alt={name} />
+        <Link to={`/product/${id}`}>
+          <img src={image} alt={name} />
+        </Link>
 
         {!inStock && (
           <span className="stock-badge">
@@ -37,7 +42,9 @@ function ProductCard({
           {category}
         </p>
 
-        <h3>{name}</h3>
+        <h3>
+          <Link to={`/product/${id}`}>{name}</Link>
+        </h3>
 
         <p className="brand">
           Brand: {brand || "Not available"}

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import CategoryFilter from "./components/CategoryFilter";
-import ProductList from "./components/ProductList";
 import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
+import NotFound from "./pages/NotFound";
 import { getProducts } from "./api";
 import "./App.css";
 
@@ -14,7 +17,7 @@ function App() {
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
-  const [cartCount, setCartCount] = useState(0);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -79,60 +82,75 @@ function App() {
     sortedProducts.sort((a, b) => b.rating - a.rating);
   }
 
-  const handleAddToCart = (productId) => {
+  const handleAddToCart = (product) => {
 
-    console.log("Product Added:", productId);
+    const exists = cart.find((item) => item.id === product.id);
 
-    setCartCount((prev) => prev + 1);
+    if (exists) {
+      setCart(
+        cart.map((item) =>
+          item.id === product.id
+            ? { ...item, qty: item.qty + 1 }
+            : item
+        )
+      );
+    } else {
+      setCart([
+        ...cart,
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          qty: 1
+        }
+      ]);
+    }
 
   };
 
+  const cartCount = cart.reduce((total, item) => total + item.qty, 0);
+
   return (
     <div>
+
       <Header cartcount={cartCount} />
-      <main className="container">
-        <h1>Shop all products</h1>
-        <CategoryFilter
-          category={category}
-          setCategory={setCategory}
-          sort={sort}
-          setSort={setSort}
-          categories={categories}
-          search={search}
-          setSearch={setSearch}
-        />
 
-        {loading ? (
-          <h2 className="loading">
-            Loading…
-          </h2>
-        ) 
-        : error ? (
-          <div className="error">
-            <h2>Something went wrong!</h2>
-            <p>{error}</p>
-          </div>
-        ) : (
-
-          <>
-            <p className="product-count">
-              Showing {sortedProducts.length} products
-            </p>
-
-            <ProductList
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
               products={sortedProducts}
+              loading={loading}
+              error={error}
+              category={category}
+              setCategory={setCategory}
+              sort={sort}
+              setSort={setSort}
+              categories={categories}
+              search={search}
+              setSearch={setSearch}
               onAddToCart={handleAddToCart}
             />
-          </>
+          }
+        />
 
-        )}
+        <Route
+          path="/product/:id"
+          element={<ProductDetail onAddToCart={handleAddToCart} />}
+        />
 
-      </main>
+        <Route path="/cart" element={<Cart cart={cart} />} />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
 
       <Footer />
 
     </div>
   );
 }
+
 export default App;
 

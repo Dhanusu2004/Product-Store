@@ -77,6 +77,78 @@ font-family: Georgia, 'Times New Roman', Times, serif;
   color: red;
   padding: 30px;
 }
+
+.header nav a {
+  text-decoration: none;
+}
+.header nav a.active {
+  color: #ff6b00;
+  font-weight: bold;
+}
+.header .cart {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-info h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.back-btn {
+  margin-bottom: 16px;
+}
+.detail {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.detail-images {
+  flex: 1;
+  min-width: 280px;
+}
+.main-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+}
+.thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.thumbs img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.thumbs img.active {
+  border-color: #ff6b00;
+}
+.detail-info {
+  flex: 1;
+  min-width: 280px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+.cart-total {
+  text-align: right;
+  margin-top: 16px;
+}
 @media (max-width: 480px) {
   .container h1 {
     font-size: 23px;

@@ -14,6 +14,7 @@ function ProductList({ products, onAddToCart }) {
 
         <ProductCard
           key={product.id}
+          id={product.id}
           image={product.image}
           name={product.name}
           description={product.description}
@@ -24,7 +25,7 @@ function ProductList({ products, onAddToCart }) {
           stock={product.stock}
           brand={product.brand}
           availability={product.availability}
-          onAddToCart={() => onAddToCart(product.id)}
+          onAddToCart={() => onAddToCart(product)}
         />
 
       ))}

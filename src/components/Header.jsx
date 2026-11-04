@@ -1,26 +1,39 @@
+import { Link, NavLink } from "react-router-dom";
 import "./Header.css";
+
 function Header({ cartcount }) {
   return (
     <header className="header">
       <h2 className="logo">
         Kadai<span>.</span>
       </h2>
+
       <nav>
-        <a href="#">Home</a>
-        <a href="#">Shop</a>
-        <a href="#">Offers</a>
-        <a href="#">Contact</a>
+        <NavLink
+          to="/"
+          end
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          Home
+        </NavLink>
+
+        <NavLink
+          to="/cart"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          Cart
+        </NavLink>
       </nav>
-      <div className="cart">
-      DB
+
+      <Link to="/cart" className="cart">
         <span className="cart-count">
           {cartcount}
         </span>
-      </div>
+      </Link>
     </header>
   );
 }
-export default Header;
 
+export default Header;
 
 
