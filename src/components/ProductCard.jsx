@@ -1,3 +1,4 @@
+import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import "./ProductCard.css";
 
@@ -12,11 +13,11 @@ function ProductCard({
   rating,
   stock,
   brand,
-  availability,
-  onAddToCart
+  availability
 })
 {
 
+  const { addToCart } = useCart();
   const inStock = stock > 0;
 
   return (
@@ -76,7 +77,7 @@ function ProductCard({
 
         <button
           disabled={!inStock}
-          onClick={onAddToCart}
+          onClick={() => addToCart({ id, name, price, image })}
         >
           {inStock ? "Add to Cart" : "Out of Stock"}
         </button>

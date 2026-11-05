@@ -1,44 +1,6 @@
-const BASE_URL = "https://dummyjson.com/products";
+export const BASE_URL = "https://dummyjson.com/products";
 
-export async function getProducts(search = "", signal) {
-
-  const url = search.trim()
-    ? `${BASE_URL}/search?q=${encodeURIComponent(search)}`
-    : `${BASE_URL}?limit=10`;
-
-  const response = await fetch(url, { signal });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch products. Please try again.");
-  }
-
-  const result = await response.json();
-
-  return result.products.map((item) => ({
-    id: item.id,
-    name: item.title,
-    description: item.description,
-    category: item.category,
-    price: item.price,
-    discount: item.discountPercentage,
-    rating: item.rating,
-    image: item.thumbnail,
-    stock: item.stock,
-    brand: item.brand,
-    availability: item.availabilityStatus
-  }));
-}
-
-export async function getProductById(id, signal) {
-
-  const response = await fetch(`${BASE_URL}/${id}`, { signal });
-
-  if (!response.ok) {
-    throw new Error("Product not found.");
-  }
-
-  const item = await response.json();
-
+export function formatProduct(item) {
   return {
     id: item.id,
     name: item.title,

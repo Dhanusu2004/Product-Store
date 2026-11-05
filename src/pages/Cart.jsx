@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import "./Cart.css";
-function Cart({ cart }) {
+
+function Cart() {
+  const { cart, removeFromCart, updateQty, cartTotal } = useCart();
 
   if (cart.length === 0) {
     return (
@@ -10,11 +13,6 @@ function Cart({ cart }) {
       </main>
     );
   }
-
-  const total = cart.reduce(
-    (sum, item) => sum + item.price * item.qty,
-    0
-  );
 
   return (
     <main className="container1 ">
@@ -27,7 +25,22 @@ function Cart({ cart }) {
           <div>
             <h3>{item.name}</h3>
             <p>Price: ₹{item.price.toLocaleString("en-IN")}</p>
-            <p>Qty: {item.qty}</p>
+
+            <div className="qty-box">
+              <button onClick={() => updateQty(item.id, item.qty - 1)}>
+                -
+              </button>
+              <span>{item.qty}</span>
+              <button onClick={() => updateQty(item.id, item.qty + 1)}>
+                +
+              </button>
+              <button
+                className="remove-btn"
+                onClick={() => removeFromCart(item.id)}
+              >
+                Remove
+              </button>
+            </div>
           </div>
 
           <h3 className="price">
@@ -37,7 +50,7 @@ function Cart({ cart }) {
       ))}
 
       <h2 className="cart-total">
-        Total: ₹{total.toLocaleString("en-IN")}
+        Total: ₹{cartTotal.toLocaleString("en-IN")}
       </h2>
     </main>
   );

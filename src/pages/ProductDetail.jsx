@@ -1,46 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProductById } from "../api";
+import useFetch from "../hooks/useFetch";
+import { useCart } from "../context/CartContext";
+import { BASE_URL, formatProduct } from "../api";
 
-function ProductDetail({ onAddToCart }) {
+function ProductDetail() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [mainImage, setMainImage] = useState("");
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const data = await getProductById(id, controller.signal);
-
-        setProduct(data);
-        setMainImage(data.images[0]);
-
-      } catch (err) {
-        if (err.name !== "AbortError") {
-          setError(err.message);
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchProduct();
-
-    return () => controller.abort();
-
-  }, [id]);
+  const { addToCart } = useCart();
+  const { data, loading, error } = useFetch(`${BASE_URL}/${id}`);
+  const [selectedImage, setSelectedImage] = useState("");
 
   if (loading) {
     return <h2 className="loading">Loading…</h2>;
@@ -57,6 +27,12 @@ function ProductDetail({ onAddToCart }) {
       </main>
     );
   }
+
+  const product = formatProduct(data);
+
+  const mainImage = product.images.includes(selectedImage)
+    ? selectedImage
+    : product.images[0];
 
   const inStock = product.stock > 0;
 
@@ -79,7 +55,7 @@ function ProductDetail({ onAddToCart }) {
                 src={img}
                 alt={product.name}
                 className={mainImage === img ? "active" : ""}
-                onClick={() => setMainImage(img)}
+                onClick={() => setSelectedImage(img)}
               />
             ))}
           </div>
@@ -96,7 +72,7 @@ function ProductDetail({ onAddToCart }) {
 
           <button
             disabled={!inStock}
-            onClick={() => onAddToCart(product)}
+            onClick={() => addToCart(product)}
           >
             {inStock ? "Add to Cart" : "Out of Stock"}
           </button>
