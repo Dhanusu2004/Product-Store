@@ -1,9 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useSelector } from "react-redux";
+import { selectCartCount } from "../features/cart/cartSlice";
 
 function Header() {
 
-  const { cartCount } = useCart();
+  const cartCount = useSelector(selectCartCount);
 
   const linkClass = ({ isActive }) =>
     isActive

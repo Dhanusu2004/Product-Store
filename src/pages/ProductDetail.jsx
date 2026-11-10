@@ -1,24 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
-import { useCart } from "../context/CartContext";
-import { BASE_URL, formatProduct } from "../api";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProductById,
+  selectSelectedProduct,
+  selectDetailStatus,
+  selectDetailError
+} from "../features/products/productsSlice";
+import { addToCart } from "../features/cart/cartSlice";
 
 function ProductDetail() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const dispatch = useDispatch();
 
-  const { data, loading, error } = useFetch(`${BASE_URL}/${id}`);
+  const product = useSelector(selectSelectedProduct);
+  const status = useSelector(selectDetailStatus);
+  const error = useSelector(selectDetailError);
 
   const [selectedImage, setSelectedImage] = useState("");
 
-  if (loading) {
-    return <h2 className="text-center p-12 text-2xl font-bold">Loading…</h2>;
-  }
+  useEffect(() => {
+    const promise = dispatch(fetchProductById(id));
 
-  if (error) {
+    return () => promise.abort();
+  }, [dispatch, id]);
+
+  if (status === "failed") {
     return (
       <main className="max-w-[1400px] mx-auto my-9 p-4">
         <div className="text-center text-red-500 p-8">
@@ -35,7 +44,9 @@ function ProductDetail() {
     );
   }
 
-  const product = formatProduct(data);
+  if (status !== "succeeded" || !product || String(product.id) !== id) {
+    return <h2 className="text-center p-12 text-2xl font-bold">Loading…</h2>;
+  }
 
   const mainImage = product.images.includes(selectedImage)
     ? selectedImage
@@ -91,7 +102,7 @@ function ProductDetail() {
 
           <button
             disabled={!inStock}
-            onClick={() => addToCart(product)}
+            onClick={() => dispatch(addToCart(product))}
             className="mt-2 px-6 py-3 bg-[#6c63ff] text-white rounded-lg cursor-pointer disabled:bg-[#aaa] disabled:cursor-not-allowed"
           >
             {inStock ? "Add to Cart" : "Out of Stock"}

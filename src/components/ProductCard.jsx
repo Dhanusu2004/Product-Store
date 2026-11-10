@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../features/cart/cartSlice";
 
 function ProductCard({
   id,
@@ -16,8 +17,8 @@ function ProductCard({
 })
 {
 
-  const { addToCart } = useCart();
-
+  const dispatch = useDispatch();
+  
   const inStock = stock > 0;
 
   return (
@@ -81,7 +82,7 @@ function ProductCard({
 
         <button
           disabled={!inStock}
-          onClick={() => addToCart({ id, name, price, image })}
+         onClick={() => dispatch(addToCart({ id, name, price, image }))}
           className="w-full p-3 bg-[#6c63ff] text-white rounded-lg cursor-pointer disabled:bg-[#aaa] disabled:cursor-not-allowed"
         >
           {inStock ? "Add to Cart" : "Out of Stock"}

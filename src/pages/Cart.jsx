@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectCartItems,
+  selectCartTotal,
+  removeFromCart,
+  updateQty
+} from "../features/cart/cartSlice";
 
 function Cart() {
 
-  const { cart, removeFromCart, updateQty, cartTotal } = useCart();
+  const dispatch = useDispatch();
+  const cart = useSelector(selectCartItems);
+  const cartTotal = useSelector(selectCartTotal);
 
   if (cart.length === 0) {
     return (
@@ -47,7 +55,9 @@ function Cart() {
 
             <div className="flex items-center gap-2.5 mt-2.5">
               <button
-                onClick={() => updateQty(item.id, item.qty - 1)}
+                onClick={() =>
+                  dispatch(updateQty({ id: item.id, qty: item.qty - 1 }))
+                }
                 className="px-3 py-1.5 border border-gray-300 bg-white rounded-md cursor-pointer"
               >
                 -
@@ -58,14 +68,16 @@ function Cart() {
               </span>
 
               <button
-                onClick={() => updateQty(item.id, item.qty + 1)}
+                onClick={() =>
+                  dispatch(updateQty({ id: item.id, qty: item.qty + 1 }))
+                }
                 className="px-3 py-1.5 border border-gray-300 bg-white rounded-md cursor-pointer"
               >
                 +
               </button>
 
               <button
-                onClick={() => removeFromCart(item.id)}
+                onClick={() => dispatch(removeFromCart(item.id))}
                 className="px-3 py-1.5 bg-red-500 text-white rounded-md cursor-pointer ml-2.5"
               >
                 Remove
