@@ -9,21 +9,28 @@ function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+
   const { data, loading, error } = useFetch(`${BASE_URL}/${id}`);
+
   const [selectedImage, setSelectedImage] = useState("");
 
   if (loading) {
-    return <h2 className="loading">Loading…</h2>;
+    return <h2 className="text-center p-12 text-2xl font-bold">Loading…</h2>;
   }
 
   if (error) {
     return (
-      <main className="container">
-        <div className="error">
-          <h2>Something went wrong!</h2>
+      <main className="max-w-[1400px] mx-auto my-9 p-4">
+        <div className="text-center text-red-500 p-8">
+          <h2 className="text-2xl font-bold">Something went wrong!</h2>
           <p>{error}</p>
         </div>
-        <button onClick={() => navigate(-1)}> Back to products</button>
+        <button
+          onClick={() => navigate(-1)}
+          className="px-4 py-2 bg-white border border-gray-300 rounded-md cursor-pointer"
+        >
+          Back to products
+        </button>
       </main>
     );
   }
@@ -37,42 +44,55 @@ function ProductDetail() {
   const inStock = product.stock > 0;
 
   return (
-    <main className="container">
+    <main className="max-w-[1400px] mx-auto my-9 p-4">
 
-      <button className="back-btn" onClick={() => navigate(-1)}>
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-4 px-4 py-2 bg-white border border-gray-300 rounded-md cursor-pointer"
+      >
         Back to products
       </button>
 
-      <div className="detail">
+      <div className="flex flex-wrap gap-8">
 
-        <div className="detail-images">
-          <img className="main-image" src={mainImage} alt={product.name} />
+        <div className="flex-1 min-w-[280px]">
+          <img
+            src={mainImage}
+            alt={product.name}
+            className="w-full max-h-[400px] object-contain"
+          />
 
-          <div className="thumbs">
+          <div className="flex gap-2 mt-2">
             {product.images.map((img) => (
               <img
                 key={img}
                 src={img}
                 alt={product.name}
-                className={mainImage === img ? "active" : ""}
                 onClick={() => setSelectedImage(img)}
+                className={
+                  "w-[60px] h-[60px] object-cover border-2 cursor-pointer " +
+                  (mainImage === img ? "border-[#ff6b00]" : "border-transparent")
+                }
               />
             ))}
           </div>
         </div>
 
-        <div className="detail-info">
-          <p className="category">{product.category}</p>
-          <h1>{product.name}</h1>
-          <p>Brand: {product.brand || "Not available"}</p>
-          <p>{product.description}</p>
-          <p className="rating"> {product.rating} / 5</p>
-          <h2>₹{product.price.toLocaleString("en-IN")}</h2>
-          <p>Status: {product.availability}</p>
+        <div className="flex-1 min-w-[280px]">
+          <p className="uppercase text-sm text-slate-500">{product.category}</p>
+          <h1 className="text-3xl font-bold my-2">{product.name}</h1>
+          <p className="my-2">Brand: {product.brand || "Not available"}</p>
+          <p className="my-2">{product.description}</p>
+          <p className="my-2 text-[#f39c12]"> {product.rating} / 5</p>
+          <h2 className="text-2xl font-bold text-[#6c63ff] my-3">
+            ₹{product.price.toLocaleString("en-IN")}
+          </h2>
+          <p className="my-2">Status: {product.availability}</p>
 
           <button
             disabled={!inStock}
             onClick={() => addToCart(product)}
+            className="mt-2 px-6 py-3 bg-[#6c63ff] text-white rounded-lg cursor-pointer disabled:bg-[#aaa] disabled:cursor-not-allowed"
           >
             {inStock ? "Add to Cart" : "Out of Stock"}
           </button>

@@ -1,4 +1,5 @@
 import CategoryFilter from "../components/CategoryFilter";
+import PriceFilter from "../components/PriceFilter";
 import ProductList from "../components/ProductList";
 import useFetch from "../hooks/useFetch";
 import { BASE_URL, formatProduct } from "../api";
@@ -9,12 +10,17 @@ function Home({
   sort,
   setSort,
   search,
-  setSearch
+  setSearch,
+  priceRange,
+  setPriceRange
 }) {
 
-  const url = search.trim()
-    ? `${BASE_URL}/search?q=${encodeURIComponent(search)}`
-    : `${BASE_URL}?limit=10`;
+  const searchText = search.trim();
+
+  const url =
+    searchText.length >= 2
+      ? `${BASE_URL}/search?q=${encodeURIComponent(searchText)}`
+      : `${BASE_URL}?limit=10`;
 
   const { data, loading, error } = useFetch(url);
 
@@ -29,6 +35,13 @@ function Home({
     category === "All"
       ? products
       : products.filter((item) => item.category === category);
+
+  const minPrice = priceRange.min === "" ? 0 : Number(priceRange.min);
+  const maxPrice = priceRange.max === "" ? Infinity : Number(priceRange.max);
+
+  filteredProducts = filteredProducts.filter(
+    (item) => item.price >= minPrice && item.price <= maxPrice
+  );
 
   let sortedProducts = [...filteredProducts];
 
@@ -45,8 +58,11 @@ function Home({
   }
 
   return (
-    <main className="container">
-      <h1>Shop all products</h1>
+    <main className="max-w-[1400px] mx-auto my-9 p-4">
+
+      <h1 className="text-2xl sm:text-3xl font-bold mb-3">
+        Shop all products
+      </h1>
 
       <CategoryFilter
         category={category}
@@ -58,22 +74,28 @@ function Home({
         setSearch={setSearch}
       />
 
+      <PriceFilter
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+      />
+
       {loading ? (
-        <h2 className="loading">Loading…</h2>
+        <h2 className="text-center p-12 text-2xl font-bold">Loading…</h2>
       ) : error ? (
-        <div className="error">
-          <h2>Something went wrong!</h2>
+        <div className="text-center text-red-500 p-8">
+          <h2 className="text-2xl font-bold">Something went wrong!</h2>
           <p>{error}</p>
         </div>
       ) : (
         <>
-          <p className="product-count">
+          <p className="text-3xl font-serif p-5">
             Showing {sortedProducts.length} products
           </p>
 
           <ProductList products={sortedProducts} />
         </>
       )}
+
     </main>
   );
 }

@@ -1,7 +1,6 @@
-import "./Footer.css";
 function Footer() {
   return (
-    <footer className="footer">
+    <footer className="text-center p-[30px] mt-[65px] border-t border-[#e1e6ed] text-slate-500 text-sm">
 
       <p>
         © 2026 Kadai Store. All rights reserved.
@@ -10,4 +9,5 @@ function Footer() {
     </footer>
   );
 }
+
 export default Footer;

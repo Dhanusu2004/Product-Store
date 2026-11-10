@@ -8,29 +8,43 @@ function CategoryFilter({
   setSearch
 }) {
 
+  const searchError =
+    search.trim().length === 1 ? "Type at least 2 letters" : "";
+
   return (
-    <div className="filters">
+    <div className="flex flex-wrap items-start gap-4 my-5">
 
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setCategory("All");
-        }}
-      />
+      <div>
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setCategory("All");
+          }}
+          className={
+            "p-3 border rounded-md min-w-[220px] bg-white " +
+            (searchError ? "border-red-500" : "border-gray-300")
+          }
+        />
 
-      <div className="category-buttons">
+        {searchError && (
+          <p className="text-sm text-red-500 mt-1">{searchError}</p>
+        )}
+      </div>
+
+      <div className="flex flex-wrap gap-2">
 
         {categories.map((item) => (
 
           <button
             key={item}
-            className={
-              category === item ? "active" : ""
-            }
             onClick={() => setCategory(item)}
+            className={
+              "px-4 py-2.5 border border-gray-300 rounded-md cursor-pointer " +
+              (category === item ? "bg-black text-white" : "bg-white")
+            }
           >
             {item}
           </button>
@@ -42,6 +56,7 @@ function CategoryFilter({
       <select
         value={sort}
         onChange={(e) => setSort(e.target.value)}
+        className="p-2.5 rounded-md border border-gray-300 bg-white"
       >
         <option value="">Sort Products</option>
         <option value="low">Price: Low to High</option>

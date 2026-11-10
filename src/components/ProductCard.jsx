@@ -1,6 +1,5 @@
-import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
-import "./ProductCard.css";
+import { useCart } from "../context/CartContext";
 
 function ProductCard({
   id,
@@ -18,66 +17,72 @@ function ProductCard({
 {
 
   const { addToCart } = useCart();
+
   const inStock = stock > 0;
 
   return (
-    <div className="product-card">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:-translate-y-1 transition-transform duration-300">
 
-      <div className="image-container">
+      <div className="h-[220px] relative bg-gray-100">
 
         <Link to={`/product/${id}`}>
-          <img src={image} alt={name} />
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-cover"
+          />
         </Link>
 
         {!inStock && (
-          <span className="stock-badge">
+          <span className="absolute top-3 right-3 bg-red-500 text-white px-3 py-[7px] rounded-md text-xs">
             Out of Stock
           </span>
         )}
 
       </div>
 
-      <div className="product-info">
+      <div className="p-[18px]">
 
-        <p className="category">
+        <p className="p-[5px]">
           {category}
         </p>
 
-        <h3>
+        <h3 className="text-lg font-bold mb-2.5">
           <Link to={`/product/${id}`}>{name}</Link>
         </h3>
 
-        <p className="brand">
+        <p className="p-[5px]">
           Brand: {brand || "Not available"}
         </p>
 
-        <p className="description">
+        <p className="p-[5px]">
           {description}
         </p>
 
-        <p className="rating">
+        <p className="text-[#f39c12] my-2.5 p-[5px]">
            {rating} / 5
         </p>
 
-        <p className="discount">
+        <p className="p-[5px]">
           Discount: {discount}% OFF
         </p>
 
-        <h2>
+        <h2 className="text-2xl font-bold text-[#6c63ff] mb-4">
           ₹{price.toLocaleString("en-IN")}
         </h2>
 
-        <p className="availability">
+        <p className="p-[5px]">
           Status: {availability}
         </p>
 
-        <p>
+        <p className="p-[5px]">
           Stock: {stock}
         </p>
 
         <button
           disabled={!inStock}
           onClick={() => addToCart({ id, name, price, image })}
+          className="w-full p-3 bg-[#6c63ff] text-white rounded-lg cursor-pointer disabled:bg-[#aaa] disabled:cursor-not-allowed"
         >
           {inStock ? "Add to Cart" : "Out of Stock"}
         </button>

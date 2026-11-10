@@ -1,14 +1,13 @@
 import ProductCard from "./ProductCard";
-import "./ProductList.css";
 
 function ProductList({ products }) {
 
   if (products.length === 0) {
-    return <h2>No products found.</h2>;
+    return <h2 className="text-2xl font-bold">No products found.</h2>;
   }
 
   return (
-    <div className="product-grid">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
       {products.map((product) => (
 

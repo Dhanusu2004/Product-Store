@@ -6,17 +6,19 @@ import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
-import "./App.css";
 
 function App() {
 
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
+  const [priceRange, setPriceRange] = useState({ min: "", max: "" });
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#d8e3f3] text-[#1b2b4b]">
+
       <Header />
+
       <Routes>
         <Route
           path="/"
@@ -28,6 +30,8 @@ function App() {
               setSort={setSort}
               search={search}
               setSearch={setSearch}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
             />
           }
         />
@@ -38,10 +42,11 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+
       <Footer />
+
     </div>
   );
 }
 
 export default App;
-
