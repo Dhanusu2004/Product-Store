@@ -4,8 +4,38 @@ import {
   createSelector
 } from "@reduxjs/toolkit";
 import { BASE_URL, formatProduct } from "../../api";
+import type { Product, RequestStatus } from "../../types";
+import type { RootState } from "../../store/store";
 
-export const fetchProducts = createAsyncThunk(
+interface ProductsState {
+  items: Product[];
+  status: RequestStatus;
+  error: string | null;
+  selectedProduct: Product | null;
+  detailStatus: RequestStatus;
+  detailError: string | null;
+}
+
+interface ApiProductsResponse {
+  products: ApiProduct[];
+}
+
+interface ApiProduct {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  thumbnail: string;
+  images: string[];
+  stock: number;
+  brand?: string;
+  availabilityStatus: string;
+}
+
+export const fetchProducts = createAsyncThunk<Product[], string>(
   "products/fetchProducts",
   async (search) => {
 
@@ -19,13 +49,13 @@ export const fetchProducts = createAsyncThunk(
       throw new Error("Failed to fetch products. Please try again.");
     }
 
-    const data = await response.json();
+    const data = await response.json() as ApiProductsResponse;
 
     return data.products.map(formatProduct);
   }
 );
 
-export const fetchProductById = createAsyncThunk(
+export const fetchProductById = createAsyncThunk<Product, string>(
   "products/fetchProductById",
   async (id) => {
 
@@ -35,13 +65,13 @@ export const fetchProductById = createAsyncThunk(
       throw new Error("Product not found.");
     }
 
-    const data = await response.json();
+    const data = await response.json() as ApiProduct;
 
     return formatProduct(data);
   }
 );
 
-const initialState = {
+const initialState: ProductsState = {
   items: [],
   status: "idle",         
   error: null,
@@ -69,7 +99,7 @@ const productsSlice = createSlice({
           return; 
         }
         state.status = "failed";
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
         state.items = [];
       })
 
@@ -87,21 +117,21 @@ const productsSlice = createSlice({
           return;
         }
         state.detailStatus = "failed";
-        state.detailError = action.error.message;
+        state.detailError = action.error.message ?? null;
       });
   }
 });
 
-export const selectProducts = (state) => state.products.items;
-export const selectProductsStatus = (state) => state.products.status;
-export const selectProductsError = (state) => state.products.error;
+export const selectProducts = (state: RootState) => state.products.items;
+export const selectProductsStatus = (state: RootState) => state.products.status;
+export const selectProductsError = (state: RootState) => state.products.error;
 
-export const selectSelectedProduct = (state) => state.products.selectedProduct;
-export const selectDetailStatus = (state) => state.products.detailStatus;
-export const selectDetailError = (state) => state.products.detailError;
+export const selectSelectedProduct = (state: RootState) => state.products.selectedProduct;
+export const selectDetailStatus = (state: RootState) => state.products.detailStatus;
+export const selectDetailError = (state: RootState) => state.products.detailError;
 
 export const selectProductsByCategory = createSelector(
-  [selectProducts, (state, category) => category],
+  [selectProducts, (_state: RootState, category: string) => category],
   (products, category) => {
     if (category === "All") {
       return products;

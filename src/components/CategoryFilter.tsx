@@ -1,3 +1,15 @@
+import type { ChangeEvent } from "react";
+
+interface CategoryFilterProps {
+  category: string;
+  setCategory: (category: string) => void;
+  sort: string;
+  setSort: (sort: string) => void;
+  categories: string[];
+  search: string;
+  setSearch: (search: string) => void;
+}
+
 function CategoryFilter({
   category,
   setCategory,
@@ -6,7 +18,7 @@ function CategoryFilter({
   categories,
   search,
   setSearch
-}) {
+}: CategoryFilterProps) {
 
   const searchError =
     search.trim().length === 1 ? "Type at least 2 letters" : "";
@@ -19,7 +31,7 @@ function CategoryFilter({
           type="text"
           placeholder="Search products..."
           value={search}
-          onChange={(e) => {
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setSearch(e.target.value);
             setCategory("All");
           }}

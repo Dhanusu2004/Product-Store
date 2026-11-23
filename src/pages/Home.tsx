@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import CategoryFilter from "../components/CategoryFilter";
 import PriceFilter from "../components/PriceFilter";
 import ProductList from "../components/ProductList";
@@ -10,6 +9,19 @@ import {
   selectProductsError,
   selectProductsByCategory
 } from "../features/products/productsSlice";
+import type { PriceRange } from "../types";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+
+interface HomeProps {
+  category: string;
+  setCategory: (category: string) => void;
+  sort: string;
+  setSort: (sort: string) => void;
+  search: string;
+  setSearch: (search: string) => void;
+  priceRange: PriceRange;
+  setPriceRange: (priceRange: PriceRange) => void;
+}
 
 function Home({
   category,
@@ -20,9 +32,9 @@ function Home({
   setSearch,
   priceRange,
   setPriceRange
-}) {
+}: HomeProps) {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const searchText = search.trim();
   const query = searchText.length >= 2 ? searchText : "";
@@ -33,11 +45,11 @@ function Home({
     return () => promise.abort();
   }, [dispatch, query]);
 
-  const products = useSelector(selectProducts);
-  const status = useSelector(selectProductsStatus);
-  const error = useSelector(selectProductsError);
+  const products = useAppSelector(selectProducts);
+  const status = useAppSelector(selectProductsStatus);
+  const error = useAppSelector(selectProductsError);
 
-  const categoryProducts = useSelector((state) =>
+  const categoryProducts = useAppSelector((state) =>
     selectProductsByCategory(state, category)
   );
 

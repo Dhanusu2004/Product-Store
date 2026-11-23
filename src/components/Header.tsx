@@ -1,12 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { selectCartCount } from "../features/cart/cartSlice";
+import type { NavLinkRenderProps } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
 
 function Header() {
 
-  const cartCount = useSelector(selectCartCount);
+  const cartCount = useAppSelector(selectCartCount);
 
-  const linkClass = ({ isActive }) =>
+  const linkClass = ({ isActive }: NavLinkRenderProps) =>
     isActive
       ? "text-[15px] text-[#ff6b00] font-bold"
       : "text-[15px] text-white";

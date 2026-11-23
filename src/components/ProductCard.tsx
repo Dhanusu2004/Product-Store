@@ -1,6 +1,20 @@
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice";
+import { useAppDispatch } from "../store/hooks";
+
+interface ProductCardProps {
+  id: number;
+  image: string;
+  name: string;
+  description: string;
+  category: string;
+  price: number;
+  discount: number;
+  rating: number;
+  stock: number;
+  brand: string;
+  availability: string;
+}
 
 function ProductCard({
   id,
@@ -14,10 +28,10 @@ function ProductCard({
   stock,
   brand,
   availability
-})
+}: ProductCardProps)
 {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   
   const inStock = stock > 0;
 

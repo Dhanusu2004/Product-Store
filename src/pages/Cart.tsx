@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartItems,
   selectCartTotal,
   removeFromCart,
   updateQty
 } from "../features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 function Cart() {
 
-  const dispatch = useDispatch();
-  const cart = useSelector(selectCartItems);
-  const cartTotal = useSelector(selectCartTotal);
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector(selectCartItems);
+  const cartTotal = useAppSelector(selectCartTotal);
 
   if (cart.length === 0) {
     return (

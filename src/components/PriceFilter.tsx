@@ -1,14 +1,26 @@
 import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import type { PriceRange } from "../types";
 
-function validate(form) {
+interface PriceFilterProps {
+  priceRange: PriceRange;
+  setPriceRange: (priceRange: PriceRange) => void;
+}
 
-  const errors = {};
+interface PriceErrors {
+  min?: string;
+  max?: string;
+}
+
+function validate(form: PriceRange): PriceErrors {
+
+  const errors: PriceErrors = {};
 
   const min = form.min.trim();
   const max = form.max.trim();
 
   if (min !== "") {
-    if (isNaN(min)) {
+    if (Number.isNaN(Number(min))) {
       errors.min = "Min price must be a number";
     } else if (Number(min) < 0) {
       errors.min = "Min price can't be negative";
@@ -16,7 +28,7 @@ function validate(form) {
   }
 
   if (max !== "") {
-    if (isNaN(max)) {
+    if (Number.isNaN(Number(max))) {
       errors.max = "Max price must be a number";
     } else if (Number(max) < 0) {
       errors.max = "Max price can't be negative";
@@ -32,18 +44,18 @@ function validate(form) {
   return errors;
 }
 
-function PriceFilter({ priceRange, setPriceRange }) {
+function PriceFilter({ priceRange, setPriceRange }: PriceFilterProps) {
 
   const [form, setForm] = useState({
     min: priceRange.min,
     max: priceRange.max
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<PriceErrors>({});
 
   const hasErrors = Object.keys(errors).length > 0;
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newForm = { ...form, [e.target.name]: e.target.value };
     setForm(newForm);
 
@@ -56,7 +68,7 @@ function PriceFilter({ priceRange, setPriceRange }) {
     setErrors(validate(form));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const newErrors = validate(form);
@@ -76,7 +88,7 @@ function PriceFilter({ priceRange, setPriceRange }) {
     setPriceRange({ min: "", max: "" });
   };
 
-  const inputClass = (name) =>
+  const inputClass = (name: "min" | "max") =>
     "p-3 border rounded-md w-40 bg-white " +
     (errors[name] ? "border-red-500" : "border-gray-300");
 

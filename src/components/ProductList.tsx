@@ -1,6 +1,11 @@
 import ProductCard from "./ProductCard";
+import type { Product } from "../types";
 
-function ProductList({ products }) {
+interface ProductListProps {
+  products: Product[];
+}
+
+function ProductList({ products }: ProductListProps) {
 
   if (products.length === 0) {
     return <h2 className="text-2xl font-bold">No products found.</h2>;

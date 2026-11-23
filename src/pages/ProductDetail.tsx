@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProductById,
   selectSelectedProduct,
@@ -8,16 +7,17 @@ import {
   selectDetailError
 } from "../features/products/productsSlice";
 import { addToCart } from "../features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 function ProductDetail() {
 
-  const { id } = useParams();
+  const { id = "" } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const product = useSelector(selectSelectedProduct);
-  const status = useSelector(selectDetailStatus);
-  const error = useSelector(selectDetailError);
+  const product = useAppSelector(selectSelectedProduct);
+  const status = useAppSelector(selectDetailStatus);
+  const error = useAppSelector(selectDetailError);
 
   const [selectedImage, setSelectedImage] = useState("");
 
