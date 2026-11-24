@@ -1,6 +1,6 @@
 import type { Product } from "./types";
 
-export const BASE_URL = "https://dummyjson.com/products";
+export const BASE_URL = import.meta.env.VITE_API_URL;
 
 interface ApiProduct {
   id: number;
