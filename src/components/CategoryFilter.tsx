@@ -67,7 +67,7 @@ function CategoryFilter({
 
       <select
         value={sort}
-        onChange={(e) => setSort(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => setSort(e.target.value)}
         className="p-2.5 rounded-md border border-gray-300 bg-white"
       >
         <option value="">Sort Products</option>
