@@ -183,6 +183,11 @@ Example response fields used by the application include `id`, `title`, `descript
 
 <img width="1897" height="898" alt="Screenshot 2026-11-23 190822" src="https://github.com/user-attachments/assets/0c40b416-50a1-43fd-a0a8-071462f3062c" />
 
+### Not found page
+
+<img width="1347" height="593" alt="Screenshot 2026-11-28 151535" src="https://github.com/user-attachments/assets/49a3be19-1f40-4bdf-941a-c4432a23c30a" />
+
+
 
 ## Future Improvements
 
