@@ -16,7 +16,7 @@ function Header() {
     <header className="bg-[#1b2b4b] text-white px-5 sm:px-[45px] py-[30px] flex justify-between items-center">
 
       <h2 className="text-[25px] font-bold">
-        Kadai<span className="text-[#ffa500]">.</span>
+        Store<span className="text-[#ffa500]">.</span>
       </h2>
 
       <nav className="hidden sm:flex gap-[30px]">
